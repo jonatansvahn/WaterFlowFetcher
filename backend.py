@@ -7,56 +7,21 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
-url = "https://vattenwebb.smhi.se/modelarea/basindownload/"
 
+
+url = "https://vattenwebb.smhi.se/modelarea/basindownload/"
 PORT = 7007
 
-"""code =  "92" #input("Skriv in delavrinningsområdets SUBID: ")
-url += code
-file_name = code + ".xls"
-
-response = requests.get(url)
-
-data = pd.read_excel(BytesIO(response.content))
-
-#with open(file_name, 'wb') as f:
-#    f.write(response.content)
-
-df = pd.read_excel(BytesIO(response.content), "Månadsvärden")
-print(df.head())
-df.rename(columns={'Unnamed: 0': 'Datum'}, inplace=True)"""
-
-"""
-df.columns = df.iloc[1]
-df = df.drop(1).reset_index(drop=True)
-df = df.dropna()
-
-print(df.head())
-
-df.columns = ['Datum' if pd.isna(col) else col for col in df.columns]
-"""
-"""df = df.dropna()
-
-#print(year_data.head())
-#print(year_data.head())
-
-#print(year_data.loc[0])
-
-df.set_index("Datum", inplace=True)
-print(df.head())
-#water = year_data["Total\nvattenföring\n[m³/s]"].dropna()
-#yearly_values = []
-
-#for val in year_data["Total\nvattenföring\n[m³/s]"]:
-#  if not math.isnan(val):
-#    yearly_values.append(val)
 
 
-sns.barplot(data=df, x="Datum", y=station_water)
-plt.title("Total stationskorrigerad vattenföring per År")
-plt.show()
+def handle_recent_values(date_col, flow_name, df):
+  df.rename(columns={date_col: 'Date'}, inplace=True)
+  df = df[['Date', flow_name]].copy()
+  df.rename(columns={flow_name: 'WaterFlow'}, inplace=True)
+  df = df.dropna()
+  return df
 
-kävlinge = 147"""
+
 
 @hook('after_request')
 def enable_cors():
@@ -67,18 +32,58 @@ def enable_cors():
 
 @get('/fetch-excel')
 def fetch_excel():
-  print("got request")
   id = request.query.id
+  date_type = request.query.dateType
+  start_date = request.query.startDate
+  end_date = request.query.endDate
   response = requests.get(url + id)
-  df = pd.read_excel(BytesIO(response.content), sheet_name="Månadsvärden")
+
+# Change date look depending on datetype
+  if date_type == "Årsvärden":
+    start_date = start_date.split("-")[0]
+    end_date = end_date.split("-")[0]
+  elif date_type == "Månadsvärden":
+    start_date = start_date.split("-")[0] + "-" + start_date.split("-")[1]
+    end_date = end_date.split("-")[0] + "-" + end_date.split("-")[1]
+
+
+
+  df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
+
+# Dygnsvärden has two useless rows at the top, remove them by using the skiprow argument
+  if date_type == "Dygnsvärden":
+    df = pd.read_excel(BytesIO(response.content), sheet_name=date_type, skiprows=[0, 1])
+  else:
+    df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
 
   df.rename(columns={'Unnamed: 0': 'Date'}, inplace=True)
   df = df[["Date", station_water]].copy()
-  df.set_index("Date")
+
+# Change from annoying name to a more reasonable one and drop two last useless rows
   df.rename(columns={station_water: 'WaterFlow'}, inplace=True)
   df.drop(df.tail(2).index, inplace=True)
 
-  print(df)
+
+# Recently updated values are in a different sheet in the excel-file, need to append them 
+  if date_type == "Dygnsvärden" or date_type == "Månadsvärden":
+    updated_df = pd.read_excel(BytesIO(response.content), sheet_name="Dygnsuppdaterade värden", skiprows=[0, 1])
+
+    if date_type == "Månadsvärden":
+      updated_df = handle_recent_values('Unnamed: 6', 'Total stationskorrigerad vattenföring\n[m³/s].1', updated_df)
+    else:
+      updated_df = handle_recent_values('Unnamed: 0', 'Total stationskorrigerad vattenföring\n[m³/s]', updated_df)
+    df = pd.concat([df, updated_df])
+
+
+# To handle situation where wanted slice goes outside dataframe range
+  start_date = max(df["Date"].iloc[0], start_date)
+  end_date = min(df["Date"].iloc[-1], end_date) 
+  
+# Retrieve rows inbetween dates
+  df = df[df["Date"].between(start_date, end_date)]
+
+# Flip dataframe so that we get most recent values first, (maybe more efficient to handle this in client-side when displaying values?)
+  df = df.iloc[::-1]
 
   response.content_type = "application/json"
   return df.to_json(orient="records")
