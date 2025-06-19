@@ -7,6 +7,12 @@
     table, th, td {
       border:1px solid black;
     }
+    h3 {
+      display: inline;
+    }
+    p {
+      display: inline;
+    }
   </style>
 </head>
 <body>
@@ -38,11 +44,20 @@
   <button id="searchButton">Sök</button>
   <br>
   <br>
+  <h3>Delavrinningsområdets namn:</h3> 
+  <p id="areaName"></p>
+  <br>
+  <h3>Huvudavrinningsområde:</h3>
+  <p id="basinName"></p>
+  <br>
+  <br>
+
   <table>
     <thead>
       <tr>
         <th>Datum</th>
         <th>Vattenföring [m³/s]</th>
+        <th>Vattenföring [m³/dygn]</th>
       </tr>
     </thead>
     <tbody id="tableBody"></tbody>

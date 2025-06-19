@@ -5,6 +5,7 @@ from io import BytesIO
 import math
 import seaborn as sns
 import matplotlib.pyplot as plt
+import json
 
 station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
 
@@ -36,6 +37,8 @@ def fetch_excel():
   date_type = request.query.dateType
   start_date = request.query.startDate
   end_date = request.query.endDate
+  
+# Send request to SMHI
   response = requests.get(url + id)
 
 # Change date look depending on datetype
@@ -45,7 +48,6 @@ def fetch_excel():
   elif date_type == "Månadsvärden":
     start_date = start_date.split("-")[0] + "-" + start_date.split("-")[1]
     end_date = end_date.split("-")[0] + "-" + end_date.split("-")[1]
-
 
 
   df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
@@ -85,13 +87,24 @@ def fetch_excel():
 # Flip dataframe so that we get most recent values first, (maybe more efficient to handle this in client-side when displaying values?)
   df = df.iloc[::-1]
 
+
+  info_df = pd.read_excel(BytesIO(response.content), sheet_name="Områdesinformation")
+
+  name = info_df.iloc[12].iloc[1]
+  main_catchment_basin = info_df.iloc[13].iloc[1]
+
+  if not pd.notna(main_catchment_basin):
+    main_catchment_basin = "Ingen hittades"
+
   response.content_type = "application/json"
-  return df.to_json(orient="records")
-  
-  
+  data_json = df.to_json(orient="records")
+  data_dict = json.loads(data_json)
+  print(df.head)
+  print(data_dict)
 
+  result = {"name": name, "main_catchment_basin": main_catchment_basin, "data": data_dict}
 
-
+  return result
 
 run(host="localhost", port=PORT, debug=True)
 

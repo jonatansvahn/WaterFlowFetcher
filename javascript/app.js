@@ -9,6 +9,9 @@ const idField = document.getElementById("idField")
 const startDate = document.getElementById("startDate");
 const endDate = document.getElementById("endDate");
 
+const areaName = document.getElementById("areaName");
+const basinName = document.getElementById("basinName");
+
 var dateType = "Årsvärden"
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -20,30 +23,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("yearButton").addEventListener("click", () => {
     dateType = "Årsvärden"
-    fetchValues();
+    //fetchValues();
   });
 
   document.getElementById("monthButton").addEventListener("click", () => {
     dateType = "Månadsvärden"
-    fetchValues();
+    //fetchValues();
   });
 
   document.getElementById("dayButton").addEventListener("click", () => {
     dateType = "Dygnsvärden"
-    fetchValues();
+    //fetchValues();
   });
 
   document.getElementById("idField").addEventListener("input", (event) => {
-    fetchValues();
+    //fetchValues();
   });
 
   document.getElementById("startDate").addEventListener("input", (event) => {
-
-    fetchValues();
+    //fetchValues();
   });
 
   document.getElementById("endDate").addEventListener("input", (event) => {
-    fetchValues();
+    //fetchValues();
   });
 });
 
@@ -57,13 +59,12 @@ function fetchValues() {
       }
       return response.json();
     })
-    .then(data => {
-      console.log("Data from backend:", data);
+    .then(result => {
+      console.log("Data from backend:", result);
+
+      loadTable(result.data);
+      displayNames(result.name, result.main_catchment_basin);
       
-      loadTable(data);
-      data.forEach(row => {
-        console.log(row);
-      });
     })
     .catch(error => {
       console.error("Fetch error:", error);
@@ -75,15 +76,21 @@ function loadTable(items) {
   var new_tbody = document.createElement('tbody');
   new_tbody.id = "tableBody";
   table.parentNode.replaceChild(new_tbody, table);
+
   items.forEach( item => {
-    
     let row = new_tbody.insertRow();
     let date = row.insertCell(0);
     date.innerHTML = item.Date;
     let flow = row.insertCell(1);
-    console.log(flow);
-    flow.innerHTML = item.WaterFlow;
+    flow.innerHTML = item.WaterFlow
+    let dayFlow = row.insertCell(2);
+    dayFlow.innerHTML = Math.round(item.WaterFlow * 3600 * 24)
   });
+}
+
+function displayNames(name, mainCatchmentBasin) {
+  areaName.textContent = name;
+  basinName.textContent = mainCatchmentBasin;
 }
 
 function limitTimeInput() {
