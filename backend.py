@@ -6,6 +6,7 @@ import math
 import seaborn as sns
 import matplotlib.pyplot as plt
 import json
+import time
 
 station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
 
@@ -50,13 +51,16 @@ def fetch_excel():
     end_date = end_date.split("-")[0] + "-" + end_date.split("-")[1]
 
 
-  df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
+  #df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
+  excel_data = pd.read_excel(BytesIO(response.content), sheet_name=None)
+
+  df = excel_data[date_type]
 
 # Dygnsvärden has two useless rows at the top, remove them by using the skiprow argument
   if date_type == "Dygnsvärden":
     df = pd.read_excel(BytesIO(response.content), sheet_name=date_type, skiprows=[0, 1])
-  else:
-    df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
+  #else:
+    #df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
 
   df.rename(columns={'Unnamed: 0': 'Date'}, inplace=True)
   df = df[["Date", station_water]].copy()
@@ -86,24 +90,20 @@ def fetch_excel():
 
 # Flip dataframe so that we get most recent values first, (maybe more efficient to handle this in client-side when displaying values?)
   df = df.iloc[::-1]
-
-
-  info_df = pd.read_excel(BytesIO(response.content), sheet_name="Områdesinformation")
+  info_df = excel_data["Områdesinformation"] #pd.read_excel(BytesIO(response.content), sheet_name="Områdesinformation")
 
   name = info_df.iloc[12].iloc[1]
   main_catchment_basin = info_df.iloc[13].iloc[1]
+  area = info_df.iloc[15].iloc[1]
 
   if not pd.notna(main_catchment_basin):
-    main_catchment_basin = "Ingen hittades"
+    main_catchment_basin = "Inget hittades"
 
   response.content_type = "application/json"
   data_json = df.to_json(orient="records")
   data_dict = json.loads(data_json)
-  print(df.head)
-  print(data_dict)
 
-  result = {"name": name, "main_catchment_basin": main_catchment_basin, "data": data_dict}
-
+  result = {"name": name, "main_catchment_basin": main_catchment_basin, "area": area, "data": data_dict}
   return result
 
 run(host="localhost", port=PORT, debug=True)

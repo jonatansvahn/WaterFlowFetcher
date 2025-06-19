@@ -11,6 +11,7 @@ const endDate = document.getElementById("endDate");
 
 const areaName = document.getElementById("areaName");
 const basinName = document.getElementById("basinName");
+const areaText = document.getElementById("area")
 
 var dateType = "Årsvärden"
 
@@ -63,7 +64,7 @@ function fetchValues() {
       console.log("Data from backend:", result);
 
       loadTable(result.data);
-      displayNames(result.name, result.main_catchment_basin);
+      displayInformation(result.name, result.main_catchment_basin, result.area);
       
     })
     .catch(error => {
@@ -88,13 +89,13 @@ function loadTable(items) {
   });
 }
 
-function displayNames(name, mainCatchmentBasin) {
+function displayInformation(name, mainCatchmentBasin, area) {
   areaName.textContent = name;
   basinName.textContent = mainCatchmentBasin;
+  areaText.textContent = Math.round(area * 100) / 100;
 }
 
 function limitTimeInput() {
-  console.log("test")
   startDate.min = earliestDate;
   endDate.min = earliestDate;
   const currentDate = new Date().toLocaleDateString();
