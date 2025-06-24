@@ -93,6 +93,7 @@ def fetch_excel():
 
   info_df = excel_data["Områdesinformation"] #pd.read_excel(BytesIO(response.content), sheet_name="Områdesinformation")
 
+  confirmed_id = info_df.iloc[10].iloc[1]
   name = info_df.iloc[12].iloc[1]
   main_catchment_basin = info_df.iloc[13].iloc[1]
   area = info_df.iloc[15].iloc[1]
@@ -104,7 +105,7 @@ def fetch_excel():
   data_json = df.to_json(orient="records")
   data_dict = json.loads(data_json)
 
-  result = {"name": name, "main_catchment_basin": main_catchment_basin, "area": area, "data": data_dict}
+  result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "data": data_dict}
   return result
 
 run(host="localhost", port=PORT, debug=True)

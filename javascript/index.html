@@ -35,6 +35,9 @@
       <button id="searchButton">Sök</button>
 
       <div class="infoLayout">
+        <h3 class="infoHead">Delavrinningsområdets ID:</h3> 
+        <p id="areaId" class="infoParagraph"></p>
+        <br>
         <h3 class="infoHead">Delavrinningsområdets namn:</h3> 
         <p id="areaName" class="infoParagraph"></p>
         <br>
@@ -58,9 +61,13 @@
       </table> 
     </div>
     <div class="rightContent">
-      <canvas id="flowChart" ></canvas>
+      <div class="chartLayout">
+        <canvas id="barChart" class="chart" ></canvas>
+      </div>
+      <div class="chartLayout">
+        <canvas id="lineChart" class="chart" ></canvas>
+      </div>
     </div>
-  
   </div>
 
 

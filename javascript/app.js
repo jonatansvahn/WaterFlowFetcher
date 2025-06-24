@@ -7,13 +7,15 @@ const idField = document.getElementById("idField")
 const startDate = document.getElementById("startDate");
 const endDate = document.getElementById("endDate");
 
+const areaId = document.getElementById("areaId")
 const areaName = document.getElementById("areaName");
 const basinName = document.getElementById("basinName");
 const areaText = document.getElementById("area");
 
 var dateType = "Årsvärden"
 
-var waterFlowChart;
+var lineChart;
+var barChart;
 
 document.addEventListener("DOMContentLoaded", () => {
   limitTimeInput();
@@ -64,7 +66,7 @@ function fetchValues() {
       console.log("Data from backend:", result);
       console.log("data:", result.data)
       loadTable(result.data);
-      displayInformation(result.name, result.main_catchment_basin, result.area);
+      displayInformation(result.id, result.name, result.main_catchment_basin, result.area);
       drawGraph(result.data);
     })
     .catch(error => {
@@ -78,9 +80,10 @@ function loadTable(items) {
   new_tbody.id = "tableBody";
   table.parentNode.replaceChild(new_tbody, table);
 
-  items.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-  items.forEach( item => {
+  //items.sort((a, b) => new Date(b.date) - new Date(a.date));
+  items.for
+  for (let i = items.length - 1; i >= 0; i--) {
+    let item = items[i];
     let row = new_tbody.insertRow();
     let date = row.insertCell(0);
     date.innerHTML = item.date;
@@ -88,14 +91,14 @@ function loadTable(items) {
     flow.innerHTML = item.waterFlow
     let dayFlow = row.insertCell(2);
     dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24)
-  });
+  }
 }
 
 function drawGraph(items) {
-  const ctx = document.getElementById("flowChart").getContext('2d');
 
-  if (waterFlowChart) {
-    waterFlowChart.destroy();
+  if (lineChart || barChart) {
+    lineChart.destroy();
+    barChart.destroy();
   }
 
   if (items.length == 0) {
@@ -111,10 +114,16 @@ function drawGraph(items) {
     dateString = "År";
   }
 
-  
+  const ctxLine = document.getElementById("lineChart").getContext('2d');
+  const ctxBar = document.getElementById("barChart").getContext('2d');
 
-  waterFlowChart = new Chart(ctx, {
-    type: 'bar',
+  lineChart = createChart("line", ctxLine, labels, values, dateString)
+  barChart = createChart("bar", ctxBar, labels, values, dateString)
+}
+
+function createChart(chartType, ctx, labels, values, dateString) {
+  return new Chart(ctx, {
+    type: chartType,
     data: {
       labels: labels,
       datasets: [{
@@ -123,7 +132,9 @@ function drawGraph(items) {
         borderColor: 'rgb(88, 88, 211)',
         backgroundColor: 'rgba(65, 65, 224, 0.4)',
         tension: 0.2,
-        fill: true
+        fill: true,
+        response: true,
+        maintainAspectRatio: false
       }]
     },
     options: {
@@ -146,7 +157,9 @@ function drawGraph(items) {
   });
 }
 
-function displayInformation(name, mainCatchmentBasin, area) {
+
+function displayInformation(id, name, mainCatchmentBasin, area) {
+  areaId.textContent = id;
   areaName.textContent = name;
   basinName.textContent = mainCatchmentBasin;
   areaText.textContent = Math.round(area * 100) / 100;
