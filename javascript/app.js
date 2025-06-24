@@ -1,5 +1,3 @@
-import * as XLSX from 'https://cdn.sheetjs.com/xlsx-latest/package/xlsx.mjs';
-
 
 const earliestDate = "2010-01-01";
 
@@ -11,9 +9,11 @@ const endDate = document.getElementById("endDate");
 
 const areaName = document.getElementById("areaName");
 const basinName = document.getElementById("basinName");
-const areaText = document.getElementById("area")
+const areaText = document.getElementById("area");
 
 var dateType = "Årsvärden"
+
+var waterFlowChart;
 
 document.addEventListener("DOMContentLoaded", () => {
   limitTimeInput();
@@ -62,10 +62,10 @@ function fetchValues() {
     })
     .then(result => {
       console.log("Data from backend:", result);
-
+      console.log("data:", result.data)
       loadTable(result.data);
       displayInformation(result.name, result.main_catchment_basin, result.area);
-      
+      drawGraph(result.data);
     })
     .catch(error => {
       console.error("Fetch error:", error);
@@ -78,14 +78,67 @@ function loadTable(items) {
   new_tbody.id = "tableBody";
   table.parentNode.replaceChild(new_tbody, table);
 
+  items.sort((a, b) => new Date(a.date) - new Date(b.date));
+
   items.forEach( item => {
     let row = new_tbody.insertRow();
     let date = row.insertCell(0);
-    date.innerHTML = item.Date;
+    date.innerHTML = item.date;
     let flow = row.insertCell(1);
-    flow.innerHTML = item.WaterFlow
+    flow.innerHTML = item.waterFlow
     let dayFlow = row.insertCell(2);
-    dayFlow.innerHTML = Math.round(item.WaterFlow * 3600 * 24)
+    dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24)
+  });
+}
+
+function drawGraph(items) {
+  const ctx = document.getElementById("flowChart").getContext('2d');
+
+  if (waterFlowChart) {
+    waterFlowChart.destroy();
+  }
+
+  const labels = items.map(i => i.date);
+  const values = items.map(i => i.waterFlow);
+  
+  var dateString = "Datum";
+
+  if (dateType == "Årsvärden") {
+    dateString = "År";
+  }
+
+  
+
+  waterFlowChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Vattenföring [m³/s]',
+        data: values,
+        borderColor: 'rgb(88, 88, 211)',
+        backgroundColor: 'rgba(65, 65, 224, 0.4)',
+        tension: 0.3,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: dateString
+          }
+        },
+        y: {
+          title: {
+            display: true,
+            text: 'Vattenföring [m³/s]'
+          }
+        }
+      }
+    }
   });
 }
 

@@ -2,18 +2,9 @@
 <html>
 <head>
   <title>JS Test</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" type="image/x-icon" href="drop.ico">
-  <style>
-    table, th, td {
-      border:1px solid black;
-    }
-    h3 {
-      display: inline;
-    }
-    p {
-      display: inline;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <script type="module" src="app.js"></script>
@@ -44,17 +35,20 @@
   <button id="searchButton">Sök</button>
   <br>
   <br>
-  <h3>Delavrinningsområdets namn:</h3> 
-  <p id="areaName"></p>
+  <h3 class="infoHead">Delavrinningsområdets namn:</h3> 
+  <p id="areaName" class="infoParagraph"></p>
   <br>
-  <h3>Delavrinningsområdets Area [km²]:</h3>
-  <p id="area"></p>
+  <h3 class="infoHead">Delavrinningsområdets Area [km²]:</h3>
+  <p id="area" class="infoParagraph"></p>
   <br>
-  <h3>Huvudavrinningsområde:</h3>
-  <p id="basinName"></p>
+  <h3 class="infoHead">Huvudavrinningsområde:</h3>
+  <p id="basinName" class="infoParagraph"></p>
   <br>
   <br>
 
+  <canvas id="flowChart" style="width: 100%; max-width: 600px; max-height: 400px;"></canvas>
+  <br>
+  <br>
   <table>
     <thead>
       <tr>

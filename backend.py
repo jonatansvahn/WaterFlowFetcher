@@ -17,9 +17,9 @@ PORT = 7007
 
 
 def handle_recent_values(date_col, flow_name, df):
-  df.rename(columns={date_col: 'Date'}, inplace=True)
-  df = df[['Date', flow_name]].copy()
-  df.rename(columns={flow_name: 'WaterFlow'}, inplace=True)
+  df.rename(columns={date_col: 'date'}, inplace=True)
+  df = df[['date', flow_name]].copy()
+  df.rename(columns={flow_name: 'waterFlow'}, inplace=True)
   df = df.dropna()
   return df
 
@@ -62,11 +62,11 @@ def fetch_excel():
   #else:
     #df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
 
-  df.rename(columns={'Unnamed: 0': 'Date'}, inplace=True)
-  df = df[["Date", station_water]].copy()
+  df.rename(columns={'Unnamed: 0': 'date'}, inplace=True)
+  df = df[["date", station_water]].copy()
 
 # Change from annoying name to a more reasonable one and drop two last useless rows
-  df.rename(columns={station_water: 'WaterFlow'}, inplace=True)
+  df.rename(columns={station_water: 'waterFlow'}, inplace=True)
   df.drop(df.tail(2).index, inplace=True)
 
 
@@ -82,14 +82,15 @@ def fetch_excel():
 
 
 # To handle situation where wanted slice goes outside dataframe range
-  start_date = max(df["Date"].iloc[0], start_date)
-  end_date = min(df["Date"].iloc[-1], end_date) 
+  start_date = max(df["date"].iloc[0], start_date)
+  end_date = min(df["date"].iloc[-1], end_date) 
   
 # Retrieve rows inbetween dates
-  df = df[df["Date"].between(start_date, end_date)]
+  df = df[df["date"].between(start_date, end_date)]
 
 # Flip dataframe so that we get most recent values first, (maybe more efficient to handle this in client-side when displaying values?)
-  df = df.iloc[::-1]
+  #df = df.iloc[::-1]
+
   info_df = excel_data["Områdesinformation"] #pd.read_excel(BytesIO(response.content), sheet_name="Områdesinformation")
 
   name = info_df.iloc[12].iloc[1]
