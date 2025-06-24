@@ -98,6 +98,10 @@ function drawGraph(items) {
     waterFlowChart.destroy();
   }
 
+  if (items.length == 0) {
+    return;
+  }
+
   const labels = items.map(i => i.date);
   const values = items.map(i => i.waterFlow);
   
@@ -118,7 +122,7 @@ function drawGraph(items) {
         data: values,
         borderColor: 'rgb(88, 88, 211)',
         backgroundColor: 'rgba(65, 65, 224, 0.4)',
-        tension: 0.3,
+        tension: 0.2,
         fill: true
       }]
     },

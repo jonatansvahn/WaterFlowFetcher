@@ -9,56 +9,59 @@
 <body>
   <script type="module" src="app.js"></script>
   <br>
-  <input type="text" id="idField">
-  <input type="date" name="from" id="startDate">
-  <input type="date" name="to" id="endDate">
+  <div class="layout">
+    <div class="leftContent">
+      <div class="inputLayout">
+        <input type="text" id="idField">
+        <input type="date" name="from" id="startDate">
+        <input type="date" name="to" id="endDate">
+      </div>
+
+      <div>
+        <input type="radio" id="yearButton" name="dateType", value="year" checked>
+        <label for="yearButton">Årsvärden</label>
+      </div>
+      
+      <div>
+        <input type="radio" id="monthButton" name="dateType", value="month">
+        <label for="monthButton">Månadsvärden</label>
+      </div>
+
+      <div>
+        <input type="radio" id="dayButton" name="dateType", value="day">
+        <label for="dayButton">Dygnsvärden</label>
+      </div>
+      
+      <button id="searchButton">Sök</button>
+
+      <div class="infoLayout">
+        <h3 class="infoHead">Delavrinningsområdets namn:</h3> 
+        <p id="areaName" class="infoParagraph"></p>
+        <br>
+        <h3 class="infoHead">Delavrinningsområdets Area [km²]:</h3>
+        <p id="area" class="infoParagraph"></p>
+        <br>
+        <h3 class="infoHead">Huvudavrinningsområde:</h3>
+        <p id="basinName" class="infoParagraph"></p>
+      </div>
+      <br>
+      <br>
+      <table>
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Vattenföring [m³/s]</th>
+            <th>Vattenföring [m³/dygn]</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table> 
+    </div>
+    <div class="rightContent">
+      <canvas id="flowChart" ></canvas>
+    </div>
   
-  <br>
-  <br>
-  <div>
-    <input type="radio" id="yearButton" name="dateType", value="year" checked>
-    <label for="yearButton">Årsvärden</label>
   </div>
-  
-  <div>
-    <input type="radio" id="monthButton" name="dateType", value="month">
-    <label for="monthButton">Månadsvärden</label>
-  </div>
-
-  <div>
-    <input type="radio" id="dayButton" name="dateType", value="day">
-    <label for="dayButton">Dygnsvärden</label>
-  </div>
-
-  <br>
-
-  <button id="searchButton">Sök</button>
-  <br>
-  <br>
-  <h3 class="infoHead">Delavrinningsområdets namn:</h3> 
-  <p id="areaName" class="infoParagraph"></p>
-  <br>
-  <h3 class="infoHead">Delavrinningsområdets Area [km²]:</h3>
-  <p id="area" class="infoParagraph"></p>
-  <br>
-  <h3 class="infoHead">Huvudavrinningsområde:</h3>
-  <p id="basinName" class="infoParagraph"></p>
-  <br>
-  <br>
-
-  <canvas id="flowChart" style="width: 100%; max-width: 600px; max-height: 400px;"></canvas>
-  <br>
-  <br>
-  <table>
-    <thead>
-      <tr>
-        <th>Datum</th>
-        <th>Vattenföring [m³/s]</th>
-        <th>Vattenföring [m³/dygn]</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table> 
 
 
 

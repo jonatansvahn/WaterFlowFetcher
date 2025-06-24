@@ -2,10 +2,47 @@ table, th, td {
   border: 1px solid black;
 }
 
+.layout {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+
+.leftContent {
+  flex: 1;
+  min-width: 200px;
+}
+.rightContent {
+  flex: 2;
+}
+
+.inputLayout {
+  margin-bottom: 20px;
+}
+
+.infoLayout {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
 
 .infoHead {
   display: inline;
 }
 .infoParagraph {
   display: inline;
+}
+
+
+#searchButton {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#flowChart {
+  margin-top: 50px;
+  margin-left: 50px;
+  max-width: 1000px; 
+  max-height: 1000px;
 }
