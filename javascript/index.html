@@ -5,67 +5,72 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="icon" type="image/x-icon" href="drop.ico">
   <link rel="stylesheet" href="styles.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+
 </head>
 <body>
   <script type="module" src="app.js"></script>
-  <br>
   <div class="layout">
-    <div class="leftContent">
-      <div class="inputLayout">
-        <input type="text" id="idField">
-        <input type="date" name="from" id="startDate">
-        <input type="date" name="to" id="endDate">
-      </div>
+    <div class="leftLayout">
+      <div class="leftContent">
+        <div class="inputLayout">
+          <input class="inputBox" type="text" id="idField">
+          <input class="inputBox" type="date" name="from" id="startDate">
+          <input class="inputBox" type="date" name="to" id="endDate">
+        </div>
 
-      <div>
-        <input type="radio" id="yearButton" name="dateType", value="year" checked>
-        <label for="yearButton">Årsvärden</label>
-      </div>
-      
-      <div>
-        <input type="radio" id="monthButton" name="dateType", value="month">
-        <label for="monthButton">Månadsvärden</label>
-      </div>
+        <div>
+          <input class="radioButton" type="radio" id="yearButton" name="dateType", value="year" checked>
+          <label for="yearButton">Årsvärden</label>
+        </div>
+        
+        <div>
+          <input class="radioButton" type="radio" id="monthButton" name="dateType", value="month">
+          <label for="monthButton">Månadsvärden</label>
+        </div>
 
-      <div>
-        <input type="radio" id="dayButton" name="dateType", value="day">
-        <label for="dayButton">Dygnsvärden</label>
-      </div>
-      
-      <button id="searchButton">Sök</button>
+        <div>
+          <input class="radioButton" type="radio" id="dayButton" name="dateType", value="day">
+          <label for="dayButton">Dygnsvärden</label>
+        </div>
+        
+        <button id="searchButton">Sök</button>
 
-      <div class="infoLayout">
-        <h3 class="infoHead">Delavrinningsområdets ID:</h3> 
-        <p id="areaId" class="infoParagraph"></p>
-        <br>
-        <h3 class="infoHead">Delavrinningsområdets namn:</h3> 
-        <p id="areaName" class="infoParagraph"></p>
-        <br>
-        <h3 class="infoHead">Delavrinningsområdets Area [km²]:</h3>
-        <p id="area" class="infoParagraph"></p>
-        <br>
-        <h3 class="infoHead">Huvudavrinningsområde:</h3>
-        <p id="basinName" class="infoParagraph"></p>
+        <div class="infoLayout">
+          <h3 class="infoHead">Delavrinningsområdets ID:</h3> 
+          <p id="areaId" class="infoParagraph"></p>
+          <br>
+          <h3 class="infoHead">Delavrinningsområdets namn:</h3> 
+          <p id="areaName" class="infoParagraph"></p>
+          <br>
+          <h3 class="infoHead">Delavrinningsområdets Area [km²]:</h3>
+          <p id="area" class="infoParagraph"></p>
+          <br>
+          <h3 class="infoHead">Huvudavrinningsområde:</h3>
+          <p id="basinName" class="infoParagraph"></p>
+        </div>
+        <div class="tableContainer">
+          <table>
+          <thead>
+            <tr>
+              <th>Datum</th>
+              <th>Vattenföring [m³/s]</th>
+              <th>Vattenföring [m³/dygn]</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table> 
+        </div>
       </div>
-      <br>
-      <br>
-      <table>
-        <thead>
-          <tr>
-            <th>Datum</th>
-            <th>Vattenföring [m³/s]</th>
-            <th>Vattenföring [m³/dygn]</th>
-          </tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table> 
     </div>
-    <div class="rightContent">
+
+    <div class="rightLayout">
       <div class="chartLayout">
         <canvas id="barChart" class="chart" ></canvas>
-      </div>
-      <div class="chartLayout">
-        <canvas id="lineChart" class="chart" ></canvas>
       </div>
     </div>
   </div>

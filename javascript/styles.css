@@ -1,20 +1,99 @@
-table, th, td {
-  border: 1px solid black;
+
+
+
+body, button, .inputBox {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+  
 }
+
+h3 {
+  color: #23395B;
+}
+
+th {
+  color: #23395B;
+}
+
+
+tr:hover {
+  background-color: #D6EEEE;
+}
+
+td {
+  text-align: right;
+}
+
+button {
+  background-color: #23395B;
+  color:white;
+  border: 2px solid #23395B;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 4px;
+  padding: 5px 15px;
+  
+}
+
+button:hover {
+  background-color: white;
+  color: #23395B;
+}
+
+button:active {
+  background-color: #23395B;
+  color: white;
+}
+
+table {
+  border-collapse: collapse;
+  
+}
+
+th, td {
+  border: 1px solid #23395B;
+  vertical-align: top;
+  padding: 0.1em;
+  padding-right: 0.2em;
+  border-top: 1px solid gray;
+  border-bottom: 1px solid gray;
+}
+
+.radioButton {
+  accent-color: #23395B;
+}
+
+.inputBox {
+  border-color: #23395B;
+  border-width: 1px;
+}
+
+.tableContainer {
+  padding-top: 20px;
+}
+
 
 .layout {
   display: flex;
   align-items: flex-start;
-  gap: 100px;
-  margin: 20px;
 }
 
+.leftLayout {
+  flex: 2;
+  height: 100%;
+}
 
 .leftContent {
-  flex: 1;
-  min-width: 200px;
+  margin: 20px
 }
-.rightContent {
+
+.rightLayout {
   flex: 2;
 }
 
@@ -35,15 +114,18 @@ table, th, td {
 }
 
 .chartLayout {
-  max-width: 1000px;
-  max-height: 1000px;
-  margin-top: 50px;
+  padding: 50px;
+  padding-right: 100px;
+  padding-top: 100px;
+  height:60vh; 
+  width:50vw
 }
 
 .chart {
   width: 100%;
   height: 100%;
 }
+
 
 #searchButton {
   margin-top: 20px;

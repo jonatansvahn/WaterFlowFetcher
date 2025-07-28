@@ -96,8 +96,7 @@ function loadTable(items) {
 
 function drawGraph(items) {
 
-  if (lineChart || barChart) {
-    lineChart.destroy();
+  if (barChart) {
     barChart.destroy();
   }
 
@@ -114,10 +113,10 @@ function drawGraph(items) {
     dateString = "År";
   }
 
-  const ctxLine = document.getElementById("lineChart").getContext('2d');
+  //const ctxLine = document.getElementById("lineChart").getContext('2d');
   const ctxBar = document.getElementById("barChart").getContext('2d');
 
-  lineChart = createChart("line", ctxLine, labels, values, dateString)
+  //lineChart = createChart("line", ctxLine, labels, values, dateString)
   barChart = createChart("bar", ctxBar, labels, values, dateString)
 }
 
@@ -129,16 +128,14 @@ function createChart(chartType, ctx, labels, values, dateString) {
       datasets: [{
         label: 'Vattenföring [m³/s]',
         data: values,
-        borderColor: 'rgb(88, 88, 211)',
-        backgroundColor: 'rgba(65, 65, 224, 0.4)',
-        tension: 0.2,
+        backgroundColor: "#586994",
         fill: true,
         response: true,
-        maintainAspectRatio: false
       }]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: false,
       scales: {
         x: {
           title: {
