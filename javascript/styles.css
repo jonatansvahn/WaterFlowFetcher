@@ -1,4 +1,6 @@
-
+:root {
+  --blue: #23395B;
+}
 
 
 body, button, .inputBox {
@@ -12,26 +14,13 @@ body, button, .inputBox {
 }
 
 h3 {
-  color: #23395B;
-}
-
-th {
-  color: #23395B;
-}
-
-
-tr:hover {
-  background-color: #D6EEEE;
-}
-
-td {
-  text-align: right;
+  color: var(--blue);
 }
 
 button {
-  background-color: #23395B;
+  background-color: var(--blue);
   color:white;
-  border: 2px solid #23395B;
+  border: 2px solid var(--blue);
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -43,11 +32,11 @@ button {
 
 button:hover {
   background-color: white;
-  color: #23395B;
+  color: var(--blue);
 }
 
 button:active {
-  background-color: #23395B;
+  background-color: var(--blue);
   color: white;
 }
 
@@ -56,8 +45,21 @@ table {
   
 }
 
+th {
+  color: var(--blue);
+}
+
+tr:hover {
+  background-color: var(--blue);
+  color: white;
+}
+
+td {
+  text-align: right;
+}
+
 th, td {
-  border: 1px solid #23395B;
+  border: 1px solid var(--blue);
   vertical-align: top;
   margin: 0.1em;
   margin-right: 0.2em;
@@ -66,11 +68,11 @@ th, td {
 }
 
 .radioButton {
-  accent-color: #23395B;
+  accent-color: var(--blue);
 }
 
 .inputBox {
-  border-color: #23395B;
+  border-color: var(--blue);
   border-width: 1px;
 }
 
