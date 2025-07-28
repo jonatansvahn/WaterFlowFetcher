@@ -37,7 +37,7 @@ button {
   display: inline-block;
   font-size: 16px;
   border-radius: 4px;
-  padding: 5px 15px;
+  margin: 5px 15px;
   
 }
 
@@ -59,8 +59,8 @@ table {
 th, td {
   border: 1px solid #23395B;
   vertical-align: top;
-  padding: 0.1em;
-  padding-right: 0.2em;
+  margin: 0.1em;
+  margin-right: 0.2em;
   border-top: 1px solid gray;
   border-bottom: 1px solid gray;
 }
@@ -75,7 +75,7 @@ th, td {
 }
 
 .tableContainer {
-  padding-top: 20px;
+  margin-top: 20px;
 }
 
 
@@ -98,7 +98,14 @@ th, td {
 }
 
 .inputLayout {
+  display: flex;
   margin-bottom: 20px;
+  gap: 20px;
+  text-align: center;
+}
+
+.inputHeader {
+  margin: 0px;
 }
 
 .infoLayout {
@@ -114,9 +121,9 @@ th, td {
 }
 
 .chartLayout {
-  padding: 50px;
-  padding-right: 100px;
-  padding-top: 100px;
+  margin: 50px;
+  margin-right: 100px;
+  margin-top: 100px;
   height:60vh; 
   width:50vw
 }
