@@ -64,6 +64,7 @@ th {
 
 td {
   text-align: right;
+  padding-right: 0.5rem;
 }
 
 th, td {
@@ -111,6 +112,8 @@ th, td {
 
 .rightLayout {
   flex: 2;
+  display: flex;
+  gap: 5rem;
 }
 
 .inputLayout {
@@ -154,4 +157,11 @@ th, td {
 
 #downloadChartButton {
   margin-left: 3rem;
+}
+
+#map {
+  margin-top: 5rem;
+  height: 20rem;
+  width: 20rem;
+  border: 2px solid var(--blue);
 }

@@ -14,10 +14,15 @@ const areaText = document.getElementById("area");
 
 const downloadChartButton = document.getElementById("downloadChartButton")
 
+const mapContainer = document.getElementById("map")
+
+
 let dateType = "Årsvärden"
 
 let lineChart;
 let barChart;
+
+let map;
 
 let currentId = 0;
 
@@ -56,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   downloadChartButton.style.visibility = "hidden"
+  mapContainer.style.visibility = "hidden"
 
   downloadChartButton.addEventListener("click", function() {
     const chartCanvas = document.getElementById("barChart"); // Replace with your chart's canvas ID
@@ -86,6 +92,7 @@ function fetchValues() {
       loadTable(result.data);
       displayInformation(result.id, result.name, result.main_catchment_basin, result.area);
       drawGraph(result.data);
+      loadMap()
     })
     .catch(error => {
       console.error("Fetch error:", error);
@@ -205,4 +212,22 @@ function setActiveDateType() {
   else {
     dateType = "Dygnsvärden";
   }
+}
+
+function loadMap() {
+
+  if (map) {
+    map.remove();
+  }
+
+  map = L.map('map').setView([51.505, -0.09], 13);
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+  }).addTo(map);
+
+  var marker = L.marker([51.5, -0.09]).addTo(map);
+
+  mapContainer.style.visibility = "visible"
 }
