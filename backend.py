@@ -7,9 +7,11 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import json
 import time
+from pyproj import Transformer
 
 station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
 
+transformer = Transformer.from_crs("EPSG:3006", "EPSG:4326", always_xy=True)
 
 url = "https://vattenwebb.smhi.se/modelarea/basindownload/"
 PORT = 7007
@@ -98,6 +100,9 @@ def fetch_excel():
   main_catchment_basin = info_df.iloc[13].iloc[1]
   area = info_df.iloc[15].iloc[1]
 
+  coords = info_df.iloc[14].iloc[1].strip(" ").split(",")
+  lon, lat = transformer.transform(coords[0], coords[1])
+
   if not pd.notna(main_catchment_basin):
     main_catchment_basin = "Inget hittades"
 
@@ -105,7 +110,7 @@ def fetch_excel():
   data_json = df.to_json(orient="records")
   data_dict = json.loads(data_json)
 
-  result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "data": data_dict}
+  result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "lat": lat, "lon": lon, "data": data_dict}
   return result
 
 run(host="localhost", port=PORT, debug=True)

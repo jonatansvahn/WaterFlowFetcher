@@ -1,5 +1,10 @@
+
+/* https: //colorhunt.co/palette/1b3c53456882d2c1b6f9f3ef */
+
+
 :root {
   --blue: #1B3C53;
+  --beige: #F9F3EF;
 }
 
 body {
@@ -23,7 +28,7 @@ h3 {
 
 button {
   background-color: var(--blue);
-  color: white;
+  color: var(--beige);
   border: 2px solid var(--blue);
   text-align: center;
   text-decoration: none;
@@ -34,13 +39,13 @@ button {
 }
 
 button:hover {
-  background-color: white;
+  background-color: var(--beige);
   color: var(--blue);
 }
 
 button:active {
   background-color: var(--blue);
-  color: white;
+  color: var(--beige);
 }
 
 #searchButton {
@@ -50,7 +55,7 @@ button:active {
 
 table {
   border-collapse: collapse;
-  background-color: white;
+  background-color: var(--beige);
 }
 
 th {
@@ -59,7 +64,7 @@ th {
 
 #tableBody tr:hover {
   background-color: var(--blue);
-  color: white;
+  color: var(--beige);
 }
 
 td {
@@ -83,6 +88,7 @@ th, td {
 .inputBox {
   border-color: var(--blue);
   border-width: 1px;
+  background-color: var(--beige);
 }
 
 .tableContainer {
@@ -151,7 +157,7 @@ th, td {
 }
 
 #barChart {
-  background-color: #F9F3EF;
+  background-color: var(--beige);
 }
 
 
@@ -160,8 +166,8 @@ th, td {
 }
 
 #map {
-  margin-top: 5rem;
-  height: 20rem;
-  width: 20rem;
+  margin-top: 7rem;
+  height: 25rem;
+  width: 25rem;
   border: 2px solid var(--blue);
 }

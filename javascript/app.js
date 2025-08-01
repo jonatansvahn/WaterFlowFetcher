@@ -92,7 +92,7 @@ function fetchValues() {
       loadTable(result.data);
       displayInformation(result.id, result.name, result.main_catchment_basin, result.area);
       drawGraph(result.data);
-      loadMap()
+      loadMap(result.lat, result.lon)
     })
     .catch(error => {
       console.error("Fetch error:", error);
@@ -214,20 +214,20 @@ function setActiveDateType() {
   }
 }
 
-function loadMap() {
+function loadMap(lat, lon) {
 
   if (map) {
     map.remove();
   }
 
-  map = L.map('map').setView([51.505, -0.09], 13);
+  map = L.map('map').setView([lat, lon], 10);
 
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
 
-  var marker = L.marker([51.5, -0.09]).addTo(map);
+  var marker = L.marker([lat, lon]).addTo(map);
 
   mapContainer.style.visibility = "visible"
 }
