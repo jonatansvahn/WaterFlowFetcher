@@ -4,6 +4,7 @@
 
 body {
   margin: 0px;
+  background-color: #F9F3EF;
 }
 
 body, button, .inputBox {
@@ -40,6 +41,11 @@ button:hover {
 button:active {
   background-color: var(--blue);
   color: white;
+}
+
+#searchButton {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
 }
 
 table {
@@ -105,9 +111,6 @@ th, td {
 
 .rightLayout {
   flex: 2;
-  background-color: #F9F3EF;
-  display: flex;
-  min-height: 100%;
 }
 
 .inputLayout {
@@ -135,16 +138,20 @@ th, td {
 
 .chartLayout {
   margin: 2rem;
-  /*margin-left: 10rem; */
   margin-top: 5rem;
-  height:60vh; 
-  width:50vw;
+  width: 40vw;
+  height: 30rem;
+}
+
+.canvas {
+  width: 40vw;
+}
+
+#barChart {
+  background-color: #F9F3EF;
 }
 
 
-
-#searchButton {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
+#downloadChartButton {
+  margin-left: 3rem;
 }
-

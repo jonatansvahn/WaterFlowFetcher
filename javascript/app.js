@@ -12,10 +12,14 @@ const areaName = document.getElementById("areaName");
 const basinName = document.getElementById("basinName");
 const areaText = document.getElementById("area");
 
-var dateType = "Årsvärden"
+const downloadChartButton = document.getElementById("downloadChartButton")
 
-var lineChart;
-var barChart;
+let dateType = "Årsvärden"
+
+let lineChart;
+let barChart;
+
+let currentId = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
   limitTimeInput();
@@ -50,6 +54,20 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("endDate").addEventListener("input", (event) => {
     //fetchValues();
   });
+
+  downloadChartButton.style.visibility = "hidden"
+
+  downloadChartButton.addEventListener("click", function() {
+    const chartCanvas = document.getElementById("barChart"); // Replace with your chart's canvas ID
+    const url = chartCanvas.toDataURL("image/png"); // Can also be 'image/jpeg'
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = currentId + ".png"
+    link.click(); 
+    link.destroy();
+  });
+
 });
 
 function fetchValues() {
@@ -76,7 +94,7 @@ function fetchValues() {
 
 function loadTable(items) {
   const table = document.getElementById("tableBody");
-  var new_tbody = document.createElement('tbody');
+  let new_tbody = document.createElement('tbody');
   new_tbody.id = "tableBody";
   table.parentNode.replaceChild(new_tbody, table);
 
@@ -95,19 +113,24 @@ function loadTable(items) {
 }
 
 function drawGraph(items) {
-
+  
   if (barChart) {
     barChart.destroy();
   }
 
   if (items.length == 0) {
+    downloadChartButton.style.visibility = "hidden"
     return;
   }
+
+
+
+  downloadChartButton.style.visibility = "visible"
 
   const labels = items.map(i => i.date);
   const values = items.map(i => i.waterFlow);
   
-  var dateString = "Datum";
+  let dateString = "Datum";
 
   if (dateType == "Årsvärden") {
     dateString = "År";
@@ -156,6 +179,7 @@ function createChart(chartType, ctx, labels, values, dateString) {
 
 
 function displayInformation(id, name, mainCatchmentBasin, area) {
+  currentId = id;
   areaId.textContent = id;
   areaName.textContent = name;
   basinName.textContent = mainCatchmentBasin;
