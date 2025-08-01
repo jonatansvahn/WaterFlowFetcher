@@ -5,6 +5,7 @@
 :root {
   --blue: #1B3C53;
   --beige: #F9F3EF;
+  --dark_beige: #D2C1B6;
 }
 
 body {
@@ -62,10 +63,6 @@ th {
   color: var(--blue);
 }
 
-#tableBody tr:hover {
-  background-color: var(--blue);
-  color: var(--beige);
-}
 
 td {
   text-align: right;
@@ -77,8 +74,20 @@ th, td {
   vertical-align: top;
   margin: 0.1em;
   margin-right: 0.2em;
+  
+  
   /*border-top: 1px solid gray;
-  border-bottom: 1px solid gray; */
+  border-bottom: 1px solid gray;*/
+}
+
+#tableBody tr:hover {
+  background-color: var(--blue);
+  color: var(--beige);
+}
+
+th, tr {
+  background-color: var(--beige);
+  
 }
 
 .radioButton {
@@ -89,6 +98,8 @@ th, td {
   border-color: var(--blue);
   border-width: 1px;
   background-color: var(--beige);
+  padding: 0.25rem;
+  font-size: 0.9rem;
 }
 
 .tableContainer {
@@ -104,7 +115,7 @@ th, td {
 
 .leftLayout {
   height: 100%;
-  background-color: #D2C1B6;
+  background-color: var(--dark_beige);
   min-height: 100vh;
   padding-left: 2rem;
   padding-right: 2rem;
