@@ -128,7 +128,7 @@ function createChart(chartType, ctx, labels, values, dateString) {
       datasets: [{
         label: 'Vattenföring [m³/s]',
         data: values,
-        backgroundColor: "#586994",
+        backgroundColor: "#456882",
         fill: true,
         response: true,
       }]
