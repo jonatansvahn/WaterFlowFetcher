@@ -12,6 +12,8 @@ const areaName = document.getElementById("areaName");
 const basinName = document.getElementById("basinName");
 const areaText = document.getElementById("area");
 
+const downloadTableButton = document.getElementById("downloadTableButton")
+
 const downloadChartButton = document.getElementById("downloadChartButton")
 
 const mapContainer = document.getElementById("map")
@@ -25,6 +27,7 @@ let barChart;
 let map;
 
 let currentId = 0;
+let currentData;
 
 document.addEventListener("DOMContentLoaded", () => {
   limitTimeInput();
@@ -60,13 +63,18 @@ document.addEventListener("DOMContentLoaded", () => {
     //fetchValues();
   });
 
-  downloadChartButton.style.visibility = "hidden"
-  mapContainer.style.visibility = "hidden"
-
+  downloadTableButton.addEventListener("click", function() {
+    downloadCSV()
+  });
+  
   downloadChartButton.addEventListener("click", function() {
     downloadChart();
   });
-
+  
+  
+  downloadTableButton.style.visibility = "hidden";
+  downloadChartButton.style.visibility = "hidden";
+  mapContainer.style.visibility = "hidden";
 });
 
 function fetchValues() {
@@ -83,9 +91,12 @@ function fetchValues() {
       console.log("Data from backend:", result);
       console.log("data:", result.data)
       loadTable(result.data);
+      if (result.id != currentId) {
+        loadMap(result.lat, result.lon)
+      } 
       displayInformation(result.id, result.name, result.main_catchment_basin, result.area);
       drawGraph(result.data);
-      loadMap(result.lat, result.lon)
+      
     })
     .catch(error => {
       console.error("Fetch error:", error);
@@ -93,22 +104,30 @@ function fetchValues() {
 }
 
 function loadTable(items) {
-  const table = document.getElementById("tableBody");
-  let new_tbody = document.createElement('tbody');
-  new_tbody.id = "tableBody";
-  table.parentNode.replaceChild(new_tbody, table);
-
-  //items.sort((a, b) => new Date(b.date) - new Date(a.date));
-  items.for
-  for (let i = items.length - 1; i >= 0; i--) {
-    let item = items[i];
-    let row = new_tbody.insertRow();
-    let date = row.insertCell(0);
-    date.innerHTML = item.date;
-    let flow = row.insertCell(1);
-    flow.innerHTML = item.waterFlow
-    let dayFlow = row.insertCell(2);
-    dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24)
+  if (items.length > 0) {
+    currentData = items;
+    downloadTableButton.style.visibility = "visible";
+    const table = document.getElementById("tableBody");
+    let new_tbody = document.createElement('tbody');
+    new_tbody.id = "tableBody";
+    table.parentNode.replaceChild(new_tbody, table);
+  
+  
+    //items.sort((a, b) => new Date(b.date) - new Date(a.date));
+    items.for
+    for (let i = items.length - 1; i >= 0; i--) {
+      let item = items[i];
+      let row = new_tbody.insertRow();
+      let date = row.insertCell(0);
+      date.innerHTML = item.date;
+      let flow = row.insertCell(1);
+      flow.innerHTML = item.waterFlow
+      let dayFlow = row.insertCell(2);
+      dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24)
+    }
+  }
+  else {
+    downloadTableButton.style.visibility = "hidden";
   }
 }
 
@@ -119,13 +138,13 @@ function drawGraph(items) {
   }
 
   if (items.length == 0) {
-    downloadChartButton.style.visibility = "hidden"
+    downloadChartButton.style.visibility = "hidden";
     return;
   }
 
 
 
-  downloadChartButton.style.visibility = "visible"
+  downloadChartButton.style.visibility = "visible";
 
   const labels = items.map(i => i.date);
   const values = items.map(i => i.waterFlow);
@@ -140,7 +159,7 @@ function drawGraph(items) {
   const ctxBar = document.getElementById("barChart").getContext('2d');
 
   //lineChart = createChart("line", ctxLine, labels, values, dateString)
-  barChart = createChart("bar", ctxBar, labels, values, dateString)
+  barChart = createChart("bar", ctxBar, labels, values, dateString);
 }
 
 function createChart(chartType, ctx, labels, values, dateString) {
@@ -183,7 +202,7 @@ function downloadChart() {
 
   const link = document.createElement("a");
   link.href = url;
-  link.download = currentId + ".png"
+  link.download = currentId + ".png";
   link.click();
   link.destroy();
 }
@@ -231,7 +250,33 @@ function loadMap(lat, lon) {
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
 
-  var marker = L.marker([lat, lon]).addTo(map);
+  L.marker([lat, lon]).addTo(map);
 
   mapContainer.style.visibility = "visible"
+}
+
+function downloadCSV() {
+  const table = document.getElementById("flowTable");
+  const rows = Array.from(table.querySelectorAll("tr"));
+  const csv = [];
+
+  for (const row of rows) {
+    const cells = Array.from(row.querySelectorAll("th, td"));
+    const rowText = cells.map(cell => {
+      const text = cell.innerText.replace(/"/g, '""'); // escape quotes
+      return `"${text}"`;
+    }).join(",");
+    csv.push(rowText);
+  }
+
+  const csvContent = csv.join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = currentId + ".csv";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
 }

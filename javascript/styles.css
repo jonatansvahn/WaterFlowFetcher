@@ -115,11 +115,11 @@ th, tr {
 }
 
 .leftLayout {
-  height: 100%;
   background-color: var(--dark_beige);
   min-height: 100vh;
   padding-left: 2rem;
   padding-right: 2rem;
+  align-self: stretch;
   
 }
 
