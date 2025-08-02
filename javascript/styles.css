@@ -10,7 +10,7 @@
 
 body {
   margin: 0px;
-  background-color: #F9F3EF;
+  background-color: var(--beige);
 }
 
 body, button, .inputBox {
@@ -132,7 +132,7 @@ th, tr {
   flex: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: 5rem;
+  gap: 2rem;
 }
 
 .inputLayout {
