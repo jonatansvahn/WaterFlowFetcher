@@ -98,12 +98,13 @@ th, tr {
   border-color: var(--blue);
   border-width: 1px;
   background-color: var(--beige);
-  padding: 0.25rem;
+  padding: 0.3rem;
   font-size: 0.9rem;
+  width: 8rem;
 }
 
 .tableContainer {
-  margin-top: 2rem;
+  margin-top: 1rem;
   display: grid;
 }
 
@@ -130,6 +131,7 @@ th, tr {
 .rightLayout {
   flex: 2;
   display: flex;
+  flex-wrap: wrap;
   gap: 5rem;
 }
 
@@ -145,7 +147,6 @@ th, tr {
 }
 
 .infoLayout {
-  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
@@ -157,7 +158,7 @@ th, tr {
 }
 
 .chartLayout {
-  margin: 2rem;
+  margin-left: 2rem;
   margin-top: 5rem;
   width: 40vw;
   height: 30rem;
@@ -178,6 +179,7 @@ th, tr {
 
 #map {
   margin-top: 7rem;
+  margin-left: 2rem;
   height: 25rem;
   width: 25rem;
   border: 2px solid var(--blue);

@@ -64,14 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
   mapContainer.style.visibility = "hidden"
 
   downloadChartButton.addEventListener("click", function() {
-    const chartCanvas = document.getElementById("barChart"); // Replace with your chart's canvas ID
-    const url = chartCanvas.toDataURL("image/png"); // Can also be 'image/jpeg'
-
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = currentId + ".png"
-    link.click(); 
-    link.destroy();
+    downloadChart();
   });
 
 });
@@ -182,6 +175,17 @@ function createChart(chartType, ctx, labels, values, dateString) {
       }
     }
   });
+}
+
+function downloadChart() {
+  const chartCanvas = document.getElementById("barChart"); // Replace with your chart's canvas ID
+  const url = chartCanvas.toDataURL("image/png"); // Can also be 'image/jpeg'
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = currentId + ".png"
+  link.click();
+  link.destroy();
 }
 
 

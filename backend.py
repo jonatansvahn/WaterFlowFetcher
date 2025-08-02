@@ -100,8 +100,8 @@ def fetch_excel():
   main_catchment_basin = info_df.iloc[13].iloc[1]
   area = info_df.iloc[15].iloc[1]
 
-  coords = info_df.iloc[14].iloc[1].strip(" ").split(",")
-  lon, lat = transformer.transform(coords[0], coords[1])
+  coords = info_df.iloc[14].iloc[1].split(",")
+  lon, lat = transformer.transform(coords[0], coords[1].strip(" "))
 
   if not pd.notna(main_catchment_basin):
     main_catchment_basin = "Inget hittades"
