@@ -121,9 +121,9 @@ function loadTable(items) {
       let date = row.insertCell(0);
       date.innerHTML = item.date;
       let flow = row.insertCell(1);
-      flow.innerHTML = item.waterFlow
+      flow.innerHTML = item.waterFlow.toString().replace(".", ",")
       let dayFlow = row.insertCell(2);
-      dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24)
+      dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24).toString().replace(".", ",")
     }
   }
   else {
