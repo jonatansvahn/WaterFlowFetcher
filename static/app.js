@@ -78,10 +78,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function fetchValues() {
+  document.body.style.cursor = 'wait';
   fetch(url + `?id=${idField.value}&dateType=${dateType}&startDate=${startDate.value}&endDate=${endDate.value}`, {
     method: "GET"
   })
     .then(response => {
+      document.body.style.cursor = 'pointer';
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
