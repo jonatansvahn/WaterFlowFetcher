@@ -36,14 +36,14 @@ def handle_recent_values(date_col, flow_name, df):
 
 
 
-@hook('after_request')
+@app.hook('after_request')
 def enable_cors():
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = 'GET'
     response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With'
 
 
-@get('/fetch-excel')
+@app.get('/fetch-excel')
 def fetch_excel():
   id = request.query.id
   date_type = request.query.dateType
