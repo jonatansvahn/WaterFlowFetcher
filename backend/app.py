@@ -112,5 +112,7 @@ def fetch_excel():
   data_json = df.to_json(orient="records")
   data_dict = json.loads(data_json)
 
+  print(data_dict)
+
   result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "lat": lat, "lon": lon, "data": data_dict}
   return result
