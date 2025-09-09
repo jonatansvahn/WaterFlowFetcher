@@ -1,13 +1,10 @@
-from bottle import get, route, run, request, response, urlunquote as unquote, hook
+from bottle import get, route, run, request, response, urlunquote as unquote, hook, Bottle, static_file
 import requests
 import pandas as pd
 from io import BytesIO
-import math
-import seaborn as sns
-import matplotlib.pyplot as plt
 import json
-import time
 from pyproj import Transformer
+import os
 
 station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
 
@@ -16,7 +13,19 @@ transformer = Transformer.from_crs("EPSG:3006", "EPSG:4326", always_xy=True)
 url = "https://vattenwebb.smhi.se/modelarea/basindownload/"
 PORT = 7007
 
+app = Bottle()
 
+@app.get("/")
+def index():
+    return static_file("index.html", root="./static")
+
+@app.get("/<filepath:path>")
+def static_files(filepath):
+    return static_file(filepath, root="./static")
+
+@app.get("/health")
+def health():
+    return "ok"
 
 def handle_recent_values(date_col, flow_name, df):
   df.rename(columns={date_col: 'date'}, inplace=True)
@@ -113,6 +122,9 @@ def fetch_excel():
   result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "lat": lat, "lon": lon, "data": data_dict}
   return result
 
-run(host="localhost", port=PORT, debug=True)
+if __name__ == "__main__":
+    # Lokal utveckling (Render kör via Gunicorn)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port, debug=True, reloader=True)
 
 
