@@ -15,13 +15,6 @@ PORT = 7007
 
 app = Bottle()
 
-@app.get("/")
-def index():
-    return static_file("index.html", root="./static")
-
-@app.get("/<filepath:path>")
-def static_files(filepath):
-    return static_file(filepath, root="./static")
 
 @app.get("/health")
 def health():
@@ -121,10 +114,3 @@ def fetch_excel():
 
   result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "lat": lat, "lon": lon, "data": data_dict}
   return result
-
-if __name__ == "__main__":
-    # Lokal utveckling (Render kör via Gunicorn)
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port, debug=True, reloader=True)
-
-
