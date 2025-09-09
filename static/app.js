@@ -1,7 +1,7 @@
 
 const earliestDate = "2010-01-01";
 
-const url = "https://vattenwebben-1.onrender.com/fetch-excel"
+const url = "https://vattenwebben.onrender.com/fetch-excel"
 
 const idField = document.getElementById("idField")
 const startDate = document.getElementById("startDate");
