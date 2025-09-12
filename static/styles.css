@@ -172,9 +172,13 @@ th, tr {
   background-color: var(--beige);
 }
 
+#downloadTableButton {
+  visibility: hidden;
+}
 
 #downloadChartButton {
   margin-left: 3rem;
+  visibility: hidden;
 }
 
 #map {
@@ -183,4 +187,5 @@ th, tr {
   height: 25rem;
   width: 25rem;
   border: 2px solid var(--blue);
+  visibility: hidden;
 }

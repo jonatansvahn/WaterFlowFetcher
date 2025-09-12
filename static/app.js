@@ -33,7 +33,9 @@ document.addEventListener("DOMContentLoaded", () => {
   limitTimeInput();
   setActiveDateType();
   document.getElementById("searchButton").addEventListener("click", () => {
-    fetchValues();
+    if (validateInput() ){
+      fetchValues();
+    }
   });
 
   document.getElementById("yearButton").addEventListener("click", () => {
@@ -79,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function fetchValues() {
   document.body.style.cursor = 'wait';
-  fetch(url + `?id=${idField.value}&dateType=${dateType}&startDate=${startDate.value}&endDate=${endDate.value}`, {
+  fetch(url + `?id=${parseInt(idField.value)}&dateType=${dateType}&startDate=${startDate.value}&endDate=${endDate.value}`, {
     method: "GET"
   })
     .then(response => {
@@ -106,18 +108,29 @@ function fetchValues() {
     });
 }
 
+function validateInput() {
+  if (!parseInt(idField.value)) {
+    alert("Id måste var ett heltal.")
+    return false
+  }
+  else if (startDate.value > endDate.value) {
+    alert("Startdatumet måste vara före slutdatumet.")
+    return false
+  }
+  return true
+}
+
+
 function loadTable(items) {
   if (items.length > 0) {
     currentData = items;
     downloadTableButton.style.visibility = "visible";
     const table = document.getElementById("tableBody");
     let new_tbody = document.createElement('tbody');
+
     new_tbody.id = "tableBody";
     table.parentNode.replaceChild(new_tbody, table);
   
-  
-    //items.sort((a, b) => new Date(b.date) - new Date(a.date));
-    items.for
     for (let i = items.length - 1; i >= 0; i--) {
       let item = items[i];
       let row = new_tbody.insertRow();
@@ -144,9 +157,6 @@ function drawGraph(items) {
     downloadChartButton.style.visibility = "hidden";
     return;
   }
-
-
-
   downloadChartButton.style.visibility = "visible";
 
   const labels = items.map(i => i.date);
@@ -158,10 +168,8 @@ function drawGraph(items) {
     dateString = "År";
   }
 
-  //const ctxLine = document.getElementById("lineChart").getContext('2d');
   const ctxBar = document.getElementById("barChart").getContext('2d');
-
-  //lineChart = createChart("line", ctxLine, labels, values, dateString)
+  
   barChart = createChart("bar", ctxBar, labels, values, dateString);
 }
 
