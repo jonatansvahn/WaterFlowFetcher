@@ -119,5 +119,5 @@ def fetch_excel():
 
   print(data_dict)
 
-  result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "lat": lat, "lon": long, "data": data_dict}
+  result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "lat": lat, "long": long, "data": data_dict}
   return result
