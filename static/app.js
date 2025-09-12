@@ -83,7 +83,7 @@ function fetchValues() {
     method: "GET"
   })
     .then(response => {
-      document.body.style.cursor = 'default';
+      document.body.style.cursor = '';
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -101,6 +101,7 @@ function fetchValues() {
       
     })
     .catch(error => {
+      document.body.style.cursor = '';
       console.error("Fetch error:", error);
     });
 }
