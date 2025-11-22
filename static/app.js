@@ -109,13 +109,26 @@ function fetchValues() {
 }
 
 function validateInput() {
-  if (!parseInt(idField.value)) {
-    alert("Id måste var ett heltal.")
-    return false
+
+  if (!idField.value) {
+    alert("Inget id är angivet.");
+    return false;
+  }
+  else if (!parseInt(idField.value)) {
+    alert("Id måste var ett heltal.");
+    return false;
   }
   else if (startDate.value > endDate.value) {
-    alert("Startdatumet måste vara före slutdatumet.")
-    return false
+    alert("Startdatumet måste vara före slutdatumet.");
+    return false;
+  }
+  else if (!startDate.value) {
+    alert("Inget startdatum är angivet.");
+    return false;
+  }
+  else if (!endDate.value) {
+    alert("Inget slutdatum är angivet.");
+    return false;
   }
   return true
 }

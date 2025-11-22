@@ -36,7 +36,9 @@ sweref = [
 (369775.0, 6388165.0),
 (356335.0, 6371955.0),
 (356335.0, 6371955.0),
-(337915.0, 6347205.0)
+(337915.0, 6347205.0),
+(340569.0, 6463562.0),
+(332305.0, 6454865.0)
 ]
 
 
@@ -71,20 +73,22 @@ gps = [
 (57.65026, 12.88499),
 (57.48182, 12.65017),
 (57.47709, 12.62034),
-(57.31709, 12.43605)
+(57.31709, 12.43605),
+(58.28401, 12.28042),
+(58.26938, 12.25413)
 ]
 
-for i in range(len(sweref)):
+#for i in range(len(sweref)):
 
   #lon, lat = transformer.transform(sweref[i][0], sweref[i][1])
   #distance = round(geodesic((lat, lon), gps[i]).kilometers, 3)
   #print(str(distance).replace(".", ","))
 
-  print(str(sweref[i][0]).replace(".0", "") +",", str(sweref[i][1]).replace(".0", ""))
+  #print(str(sweref[i][0]).replace(".0", "") +",", str(sweref[i][1]).replace(".0", ""))
 
 
 
-lon, lat = transformer.transform(409765, 6488945)
+lon, lat = transformer.transform(340569.0, 6463562.0)
 print(lon, lat)
-distance = round(geodesic((lat, lon), (58.53211, 13.452)).kilometers, 3)
+distance = round(geodesic((lat, lon), (58.28401, 12.28042)).kilometers, 3)
 print(str(distance).replace(".", ","))
