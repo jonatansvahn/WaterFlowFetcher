@@ -13,7 +13,6 @@ const basinName = document.getElementById("basinName");
 const areaText = document.getElementById("area");
 
 const downloadTableButton = document.getElementById("downloadTableButton")
-
 const downloadChartButton = document.getElementById("downloadChartButton")
 
 const mapContainer = document.getElementById("map")
@@ -150,7 +149,7 @@ function loadTable(items) {
       let date = row.insertCell(0);
       date.innerHTML = item.date;
       let flow = row.insertCell(1);
-      flow.innerHTML = item.waterFlow;
+      flow.innerHTML = Number.prototype.toString(item.waterFlow).replace('.', ',');
       let dayFlow = row.insertCell(2);
       dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24)
     }
@@ -221,8 +220,8 @@ function createChart(chartType, ctx, labels, values, dateString) {
 }
 
 function downloadChart() {
-  const chartCanvas = document.getElementById("barChart"); // Replace with your chart's canvas ID
-  const url = chartCanvas.toDataURL("image/png"); // Can also be 'image/jpeg'
+  const chartCanvas = document.getElementById("barChart");
+  const url = chartCanvas.toDataURL("image/png");
 
   const link = document.createElement("a");
   link.href = url;
