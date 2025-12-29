@@ -149,7 +149,7 @@ function loadTable(items) {
       let date = row.insertCell(0);
       date.innerHTML = item.date;
       let flow = row.insertCell(1);
-      flow.innerHTML = item.waterFlow.toString().replace('.', ',');
+      flow.innerHTML = item.waterFlow;
       let dayFlow = row.insertCell(2);
       dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24)
     }
