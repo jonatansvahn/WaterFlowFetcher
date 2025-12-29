@@ -149,7 +149,7 @@ function loadTable(items) {
       let date = row.insertCell(0);
       date.innerHTML = item.date;
       let flow = row.insertCell(1);
-      flow.innerHTML = item.waterFlow;
+      flow.innerHTML = item.waterFlow.toString().replace('.', ',');
       let dayFlow = row.insertCell(2);
       dayFlow.innerHTML = Math.round(item.waterFlow * 3600 * 24)
     }
@@ -236,7 +236,7 @@ function displayInformation(id, name, mainCatchmentBasin, area) {
   areaId.textContent = id;
   areaName.textContent = name;
   basinName.textContent = mainCatchmentBasin;
-  areaText.textContent = Math.round(area * 100) / 100;
+  areaText.textContent = (Math.round(area * 100) / 100).toString().replace('.', ',');
 }
 
 function limitTimeInput() {
