@@ -106,12 +106,12 @@ def fetch_excel():
 
   info_df = excel_data["Områdesinformation"] #pd.read_excel(BytesIO(smhi_response.content), sheet_name="Områdesinformation")
 
-  confirmed_id = info_df.iloc[10].iloc[1]
-  name = info_df.iloc[12].iloc[1]
-  main_catchment_basin = info_df.iloc[13].iloc[1]
-  area = info_df.iloc[15].iloc[1]
+  confirmed_id = info_df.iloc[7].iloc[1]
+  name = info_df.iloc[9].iloc[1]
+  main_catchment_basin = info_df.iloc[10].iloc[1]
+  area = info_df.iloc[11].iloc[1]
 
-  coords = info_df.iloc[14].iloc[1]
+  coords = info_df.iloc[12].iloc[1]
   if pd.notna(coords):
     coords = coords.split(",")
     long, lat = transformer.transform(coords[0], coords[1].strip(" "))
