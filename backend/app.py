@@ -10,7 +10,7 @@ station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
 
 transformer = Transformer.from_crs("EPSG:3006", "EPSG:4326", always_xy=True)
 
-url = "https://vattenwebb.smhi.se/modelarea/basindownload/"
+url = "https://vattenwebb.smhi.se/webservices/download/api/v1/excel//land/basin/bySubid/"
 PORT = int(os.environ.get("PORT", 7007))
 
 app = Bottle()
