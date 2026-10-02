@@ -80,7 +80,6 @@ def fetch_excel():
 
 # Change from annoying name to a more reasonable one and drop two last useless rows
   df.rename(columns={station_water: 'waterFlow'}, inplace=True)
-  df.drop(df.tail(2).index, inplace=True)
 
 
 # Recently updated values are in a different sheet in the excel-file, need to append them 
