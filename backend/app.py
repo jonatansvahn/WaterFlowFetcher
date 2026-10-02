@@ -115,7 +115,7 @@ def fetch_excel():
   coords = info_df.iloc[12].iloc[1]
   if pd.notna(coords):
     coords = coords.split(",")
-    long, lat = transformer.transform(coords[0], coords[1].strip(" "))
+    lat, long = transformer.transform(coords[0], coords[1].strip(" "))
   else:
     long = 0
     lat = 0
