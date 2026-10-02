@@ -100,7 +100,7 @@ def fetch_excel():
   
 # Retrieve rows inbetween dates
   df = df[df["date"].between(start_date, end_date)]
-  df["date"] = df["date"].dt.strftime("%Y-%m-%d")
+  df["date"] = df["date"].dt.strftime(date_format)
 
 # Flip dataframe so that we get most recent values first, (maybe more efficient to handle this in client-side when displaying values?)
   #df = df.iloc[::-1]
