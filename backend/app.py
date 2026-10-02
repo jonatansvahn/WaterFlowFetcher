@@ -5,6 +5,7 @@ from io import BytesIO
 import json
 from pyproj import Transformer
 import os
+from datetime import datetime
 
 station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
 
@@ -23,6 +24,8 @@ def health():
 def handle_recent_values(date_col, flow_name, df):
   df.rename(columns={date_col: 'date'}, inplace=True)
   df = df[['date', flow_name]].copy()
+  df["date"] = pd.to_datetime(df["date"], errors="coerce")
+  df = df.dropna(subset=["date"])
   df.rename(columns={flow_name: 'waterFlow'}, inplace=True)
   df = df.dropna()
   return df
@@ -43,31 +46,36 @@ def fetch_excel():
   start_date = request.query.startDate
   end_date = request.query.endDate
   
+  
 # Send request to SMHI
   smhi_response = requests.get(url + id)
 
+  date_format = "%Y-%m-%d"
 # Change date look depending on datetype
   if date_type == "Årsvärden":
     start_date = start_date.split("-")[0]
     end_date = end_date.split("-")[0]
+    date_format = "%Y"
   elif date_type == "Månadsvärden":
     start_date = start_date.split("-")[0] + "-" + start_date.split("-")[1]
     end_date = end_date.split("-")[0] + "-" + end_date.split("-")[1]
+    date_format = "%Y-%m"
 
+  start_date = datetime.strptime(start_date, date_format)
+  end_date = datetime.strptime(end_date, date_format)
 
   #df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
   excel_data = pd.read_excel(BytesIO(smhi_response.content), sheet_name=None)
 
-  df = excel_data[date_type]
-
 # Dygnsvärden has two useless rows at the top, remove them by using the skiprow argument
   if date_type == "Dygnsvärden":
-    df = pd.read_excel(BytesIO(smhi_response.content), sheet_name=date_type, skiprows=[0, 1])
-  #else:
-    #df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
+    rows_to_skip = 6
+  df = pd.read_excel(BytesIO(smhi_response.content), sheet_name=date_type, skiprows=2)
 
   df.rename(columns={'Unnamed: 0': 'date'}, inplace=True)
   df = df[["date", station_water]].copy()
+  df["date"] = pd.to_datetime(df["date"], errors="coerce")
+  df = df.dropna(subset=["date"])
 
 # Change from annoying name to a more reasonable one and drop two last useless rows
   df.rename(columns={station_water: 'waterFlow'}, inplace=True)
@@ -76,12 +84,12 @@ def fetch_excel():
 
 # Recently updated values are in a different sheet in the excel-file, need to append them 
   if date_type == "Dygnsvärden" or date_type == "Månadsvärden":
-    updated_df = pd.read_excel(BytesIO(smhi_response.content), sheet_name="Dygnsuppdaterade värden", skiprows=[0, 1])
-
+    updated_df = pd.read_excel(BytesIO(smhi_response.content), sheet_name="Dygnsuppdaterade värden", skiprows=4)
+    print(updated_df.columns)
     if date_type == "Månadsvärden":
-      updated_df = handle_recent_values('Unnamed: 6', 'Total stationskorrigerad vattenföring\n[m³/s].1', updated_df)
+      updated_df = handle_recent_values('Unnamed: 6', "Total stationskorrigerad vattenföring [m³/s].1", updated_df)
     else:
-      updated_df = handle_recent_values('Unnamed: 0', 'Total stationskorrigerad vattenföring\n[m³/s]', updated_df)
+      updated_df = handle_recent_values('Unnamed: 0', "Total stationskorrigerad vattenföring [m³/s]", updated_df)
     df = pd.concat([df, updated_df])
 
 
