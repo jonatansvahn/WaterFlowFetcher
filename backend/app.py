@@ -7,7 +7,7 @@ from pyproj import Transformer
 import os
 from datetime import datetime
 
-station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
+station_water = "Total stationskorrigerad vattenföring [m³/s]"
 
 transformer = Transformer.from_crs("EPSG:3006", "EPSG:4326", always_xy=True)
 
@@ -68,9 +68,10 @@ def fetch_excel():
   excel_data = pd.read_excel(BytesIO(smhi_response.content), sheet_name=None)
 
 # Dygnsvärden has two useless rows at the top, remove them by using the skiprow argument
+  rows_to_skip = 2
   if date_type == "Dygnsvärden":
-    rows_to_skip = 6
-  df = pd.read_excel(BytesIO(smhi_response.content), sheet_name=date_type, skiprows=2)
+      rows_to_skip = 6
+  df = pd.read_excel(BytesIO(smhi_response.content), sheet_name=date_type, skiprows=rows_to_skip)
 
   df.rename(columns={'Unnamed: 0': 'date'}, inplace=True)
   df = df[["date", station_water]].copy()
