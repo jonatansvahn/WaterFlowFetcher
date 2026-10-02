@@ -88,7 +88,7 @@ def fetch_excel():
     updated_df = pd.read_excel(BytesIO(smhi_response.content), sheet_name="Dygnsuppdaterade värden", skiprows=4)
     print(updated_df.columns)
     if date_type == "Månadsvärden":
-      updated_df = handle_recent_values('Unnamed: 6', "Total stationskorrigerad vattenföring [m³/s].1", updated_df)
+      updated_df = handle_recent_values('Unnamed: 7', "Total stationskorrigerad vattenföring [m³/s].1", updated_df)
     else:
       updated_df = handle_recent_values('Unnamed: 0', "Total stationskorrigerad vattenföring [m³/s]", updated_df)
     df = pd.concat([df, updated_df])
