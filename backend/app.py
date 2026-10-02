@@ -11,7 +11,7 @@ station_water = "Total\nstationskorrigerad\nvattenföring\n[m³/s]"
 transformer = Transformer.from_crs("EPSG:3006", "EPSG:4326", always_xy=True)
 
 url = "https://vattenwebb.smhi.se/modelarea/basindownload/"
-PORT = 7007
+PORT = int(os.environ.get("PORT", 7007))
 
 app = Bottle()
 
@@ -44,7 +44,7 @@ def fetch_excel():
   end_date = request.query.endDate
   
 # Send request to SMHI
-  response = requests.get(url + id)
+  smhi_response = requests.get(url + id)
 
 # Change date look depending on datetype
   if date_type == "Årsvärden":
@@ -56,13 +56,13 @@ def fetch_excel():
 
 
   #df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
-  excel_data = pd.read_excel(BytesIO(response.content), sheet_name=None)
+  excel_data = pd.read_excel(BytesIO(smhi_response.content), sheet_name=None)
 
   df = excel_data[date_type]
 
 # Dygnsvärden has two useless rows at the top, remove them by using the skiprow argument
   if date_type == "Dygnsvärden":
-    df = pd.read_excel(BytesIO(response.content), sheet_name=date_type, skiprows=[0, 1])
+    df = pd.read_excel(BytesIO(smhi_response.content), sheet_name=date_type, skiprows=[0, 1])
   #else:
     #df = pd.read_excel(BytesIO(response.content), sheet_name=date_type)
 
@@ -76,7 +76,7 @@ def fetch_excel():
 
 # Recently updated values are in a different sheet in the excel-file, need to append them 
   if date_type == "Dygnsvärden" or date_type == "Månadsvärden":
-    updated_df = pd.read_excel(BytesIO(response.content), sheet_name="Dygnsuppdaterade värden", skiprows=[0, 1])
+    updated_df = pd.read_excel(BytesIO(smhi_response.content), sheet_name="Dygnsuppdaterade värden", skiprows=[0, 1])
 
     if date_type == "Månadsvärden":
       updated_df = handle_recent_values('Unnamed: 6', 'Total stationskorrigerad vattenföring\n[m³/s].1', updated_df)
@@ -95,7 +95,7 @@ def fetch_excel():
 # Flip dataframe so that we get most recent values first, (maybe more efficient to handle this in client-side when displaying values?)
   #df = df.iloc[::-1]
 
-  info_df = excel_data["Områdesinformation"] #pd.read_excel(BytesIO(response.content), sheet_name="Områdesinformation")
+  info_df = excel_data["Områdesinformation"] #pd.read_excel(BytesIO(smhi_response.content), sheet_name="Områdesinformation")
 
   confirmed_id = info_df.iloc[10].iloc[1]
   name = info_df.iloc[12].iloc[1]
@@ -121,3 +121,7 @@ def fetch_excel():
 
   result = {"id": confirmed_id, "name": name, "main_catchment_basin": main_catchment_basin, "area": area, "lat": lat, "long": long, "data": data_dict}
   return result
+
+
+if __name__ == "__main__":
+  run(app, host="0.0.0.0", port=PORT)
