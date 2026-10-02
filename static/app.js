@@ -88,7 +88,7 @@ function fetchValues() {
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      return response.json();
+      return response.text();
     })
     .then(result => {
       console.log("Data from backend:", result);
